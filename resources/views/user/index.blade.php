@@ -1,11 +1,11 @@
-@extends('admin-layout.main')
+@extends('general-layout.main')
+@push('styles')
 @section('title', 'Dashboard')
 @php
     $breadcrumbs = [
         'Dashboard' => null,
     ];
 @endphp
-@push('styles')
 <!-- Plugin css for this page -->
 <link rel="stylesheet" href="/assets/vendors/font-awesome/css/font-awesome.min.css" />
 <link rel="stylesheet" href="/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
@@ -48,7 +48,7 @@
     </div>
   </div>
 @endsection
-@section('scripts')
+@push('scripts')
     <!-- Plugin js for this page -->
     <script src="/assets/vendors/chart.js/chart.umd.js"></script>
     <script src="/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
@@ -63,4 +63,4 @@
     <!-- Custom js for this page -->
     <script src="/assets/js/dashboard.js"></script>
     <!-- End custom js for this page -->
-@endsection
+@endpush

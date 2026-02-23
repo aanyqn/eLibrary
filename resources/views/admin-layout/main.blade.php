@@ -3,7 +3,7 @@
     <head>
         @include('admin-layout.head')
         @include('admin-layout.global_style')
-        @yield('styles')
+        @stack('styles')
     </head>
     <body>
         <div class="container-scroller">
@@ -11,19 +11,21 @@
             <div class="container-fluid page-body-wrapper">
                 @include('admin-layout.sidebar')
                 <div class="main-panel">
-                    <div class="page-header m-4">
+                    <div class="content-wrapper">
+                    <div class="page-header m-2">
                         <h2>@yield('title')</h2>
                         @if (isset($breadcrumbs))
                             @include('admin-layout.breadcrumb', ['breadcrumbs' => $breadcrumbs])
                         @endif
                     </div>
                     @yield('content')
+                    </div>
                 </div>
             </div>
         </div>
         @include('admin-layout.footer')
         @include('admin-layout.global_js')
-        @yield('scripts')
+        @stack('scripts')
     </body>
 </html>
 

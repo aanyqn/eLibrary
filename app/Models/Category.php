@@ -7,9 +7,13 @@ use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
-    public function data()
+    protected $table = 'kategori';
+    protected $primaryKey = 'idkategori';
+    protected $fillable = ['nama_kategori'];
+    public $timestamps = false;
+    public function buku()
     {
-        $category = DB::table('kategori')->select('idkategori', 'nama_kategori')->get();
-        return $category;
+        return $this->hasMany(Book::class, 'idkategori', 'idkategori');
+
     }
 }

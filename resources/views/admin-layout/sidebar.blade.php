@@ -16,14 +16,16 @@ $menus = [
                   <!--change to offline or busy as needed-->
                 </div>
                 <div class="nav-profile-text d-flex flex-column">
-                  <span class="font-weight-bold mb-2">{{ session('user_name') }}</span>
-                  <span class="text-secondary text-small">{{ session('user_role_name') }}</span>
+                  <span class="font-weight-bold mb-2">{{ auth()->user()->name }}</span>
+                  <span class="text-secondary text-small">
+                    {{ auth()->user()->roles->first()?->name }}
+                  </span>
                 </div>
               </a>
             </li>
             @foreach($menus as $menu)
             @php
-            $isActive = request()->routeIs($menu['route']); 
+            $isActive = request()->routeIs($menu['route'].'*');
             @endphp
             <li class="nav-item">
               <a class="nav-link {{ $isActive ? 'color-purple' : '' }}" href="{{ route($menu['route']) }}">

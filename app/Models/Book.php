@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class Book extends Model
 {
-    public function data()
+    protected $table = 'buku';
+    protected $primaryKey = 'idbuku';
+    protected $fillable = ['kode', 'judul', 'pengarang', 'idkategori'];
+    public $timestamps = false;
+    public function category()
     {
-        $book = DB::table('buku')->leftJoin('kategori', 'buku.idkategori', '=', 'kategori.idkategori')->select('buku.idbuku', 'buku.kode', 'buku.judul', 'buku.pengarang', 'buku.idkategori', 'kategori.nama_kategori')->get();
-        return $book;
+        return $this->belongsTo(Category::class, 'idkategori', 'idkategori');
     }
 }

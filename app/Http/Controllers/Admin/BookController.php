@@ -7,38 +7,71 @@ use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
     public function index()
     {
-        $book = new Book();
-        $data = $book->data();
+        $data = Book::all();
         return view('admin.book.index', compact('data'));
     }
     public function create()
     {
-        $category = New Category();
-        $data_category = $category->data();
+        $data_category = Category::all();
         return view('admin.book.create', compact('data_category'));
     }
 
     public function store(Request $request)
     {
-        $validatedData = $this->validateBook($request);
-        $buku = $this->createBook($validatedData);
+        $validated = $request->validate($this->rules());
+        if(!$validated) {
+            return redirect()->back()
+                            ->withErrors($validated)
+                            ->withInput();
+        }
+        try {
+            Book::create($validated);
+        } catch (\Exception $e) {
+              throw new \Exception(('Gagal menyimpan data book: ' . $e->getMessage()));
+        }
+        
         return redirect()->route('admin.book')
                         ->with('success', 'buku berhasil ditambahkan.');
     }
 
-    protected function validateBook(Request $request, $id = null)
+    protected function edit($id)
+    {
+        $old = Book::where('idbuku', $id)->get();
+        $data_category = Category::all();
+        return view('admin.book.edit', compact('id', 'old', 'data_category'));
+    }
+
+    protected function update(Request $request)
+    {
+        $validated = $request->validate($this->rules($request->idbuku));
+        if(!$validated) {
+            return redirect()->back()
+                            ->withErrors($validated)
+                            ->withInput();
+        }
+        try {
+            Book::where('idbuku', $request->idbuku)->update($validated);
+        } catch (\Exception $e) {
+              throw new \Exception(('Gagal menyimpan data book: ' . $e->getMessage()));
+        }
+        return redirect()->route('admin.book')
+                        ->with('success', 'book berhasil ubah.');
+    }
+
+    protected function rules($id = null)
     {
         $uniqueRule = $id ?
             'unique:buku,judul,' . $id . ',idbuku' :
             'unique:buku,judul';
 
         if($id != null) {
-            return $request->validate([
+            return [
             'kode' => [
                 'required',
                 'string',
@@ -62,108 +95,46 @@ class BookController extends Controller
                 'required',
                 'numeric'
             ],
-            'idbuku' => [
+        ];
+        }
+
+        return [
+            'kode' => [
+                'required',
+                'string',
+                'max:20',
+                'min:3',
+            ],
+            'judul' => [
+                'required',
+                'string',
+                'max:255',
+                'min:3',
+                $uniqueRule
+            ],
+            'pengarang' => [
+                'required',
+                'string',
+                'max:200',
+                'min:3',
+            ],
+            'idkategori' => [
                 'required',
                 'numeric'
             ]
-
-        ], [
-            'judul.required' => 'Nama book wajib diisi',
-            'judul.string' => 'Nama book harus berupa teks',
-            'judul.max' => 'Nama book max 255 karakter',
-            'judul.min' => 'Nama book minimal 3 karakter',
-            'judul.unique' => 'Nama book sudah ada',
-        ]);
-        }
-
-        return $request->validate([
-            'kode' => [
-                'required',
-                'string',
-                'max:20',
-                'min:3',
-            ],
-            'judul' => [
-                'required',
-                'string',
-                'max:255',
-                'min:3',
-                $uniqueRule
-            ],
-            'pengarang' => [
-                'required',
-                'string',
-                'max:200',
-                'min:3',
-            ],
-            'idkategori' => [
-                'required',
-                'numeric'
-            ],
-
-        ], [
-            'judul.required' => 'Nama book wajib diisi',
-            'judul.string' => 'Nama book harus berupa teks',
-            'judul.max' => 'Nama book max 255 karakter',
-            'judul.min' => 'Nama book minimal 3 karakter',
-            'judul.unique' => 'Nama book sudah ada',
-        ]);
+        ];
     }
 
-    protected function createBook(array $data)
-    {
-        try {
-            
-            $buku = DB::table('buku')->insert([
-                'kode' => $data['kode'],
-                'judul' => $this->formatJudul($data['judul']),
-                'pengarang' => $data['pengarang'],
-                'idkategori' => $data['idkategori'],
-            ]);
-            return $buku;
-        } catch (\Exception $e) {
-            throw new \Exception(('Gagal menyimpan data book: ' . $e->getMessage()));
-        }
-    }
-    protected function edit($id)
-    {
-        return view('admin.book.edit', compact('id'));
-    }
-
-    protected function update(Request $request)
-    {
-        $validatedData = $this->validateBook($request, $request['idjenis_hewan']);
-        $buku = $this->updateJenisHewan($validatedData);
-        return redirect()->route('admin.book.index')
-                        ->with('success', 'book berhasil ubah.');
-    }
-    protected function updateJenisHewan(array $data)
-    {
-        try {
-            $buku = DB::table('buku')->where('idjenis_hewan', $data['idjenis_hewan'])->update([
-                'judul' => $this->formatJudul($data['judul'])
-            ]);
-            return $buku;
-        } catch (\Exception $e) {
-            throw new \Exception(('Gagal menyimpan data book: ' . $e->getMessage()));
-        }
-    }
     protected function destroy($id)
     {
-        if (!JenisHewan::where('idjenis_hewan', $id)->exists()) {
+        if (!Book::where('idbuku', $id)->exists()) {
             return redirect()->back()->with('error', 'Data tidak ditemukan.');
         }
         try {
-            RasHewan::where('idjenis_hewan', $id)->delete();
-            JenisHewan::where('idjenis_hewan', $id)->delete();
+            Book::where('idbuku', $id)->delete();
             return redirect()->back()->with('deleteSuccess', 'Data berhasil dihapus.');
         } catch (\Exception $e) {
             throw new \Exception(('Gagal menghapus data book: ' . $e->getMessage()));
         }
-    }
-
-    protected function formatJudul($nama)
-    {
-        return trim(ucwords(strtolower($nama)));
     }
 }

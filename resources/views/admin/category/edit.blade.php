@@ -1,9 +1,9 @@
 @extends('admin-layout.main')
-@section('title', 'Category')
+@section('title', 'Edit Category')
 @php
     $breadcrumbs = [
         'Category' => route('admin.category'),
-        'Add' => null
+        'Edit' => null
     ];
 @endphp
 @push('styles')
@@ -15,10 +15,11 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-    <h4 class="card-title">Add Category</h4>
-    <p class="card-description">Add new books category</p>
-    <form action="{{ route('admin.category.store') }}" method="POST" class="forms-sample">
+    <h4 class="card-title">Edit Category</h4>
+    <p class="card-description">Edit books category</p>
+    <form action="{{ route('admin.category.update') }}" method="POST" class="forms-sample">
         @csrf
+        <input type="hidden" name="idkategori" value="{{ $id }}">
         <div class="form-group">
         <label for="nama_kategori">Category Name</label>
         <input type="text" name="nama_kategori" class="form-control" id="namaKategori" placeholder="ex. Dongeng">
@@ -27,7 +28,7 @@
         @enderror
         </div>
         <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
-        <button class="btn btn-light">Cancel</button>
+        <a href="{{ route('admin.category') }}"><button class="btn btn-light">Cancel</button></a>
     </form>
     </div>
 </div>

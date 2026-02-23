@@ -11,8 +11,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $category = new Category();
-        $data = $category->data();
+        $data = Category::all();
         return view('admin.category.index', compact('data'));
     }
     public function create()
@@ -22,20 +21,51 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $this->validateCategory($request);
-        $kategori = $this->createCategory($validatedData);
+       $validated = $request->validate($this->rules());
+        if(!$validated) {
+            return redirect()->back()
+                            ->withErrors($validated)
+                            ->withInput();
+        }
+        try {
+            Category::create($validated);
+        } catch (\Exception $e) {
+              throw new \Exception(('Gagal menyimpan data book: ' . $e->getMessage()));
+        }
         return redirect()->route('admin.category')
                         ->with('success', 'category berhasil ditambahkan.');
     }
 
-    protected function validateCategory(Request $request, $id = null)
+     protected function edit($id)
+    {
+        return view('admin.category.edit', compact('id'));
+    }
+
+    protected function update(Request $request)
+    {
+        $validated = $request->validate($this->rules($request->idkategori));
+        if(!$validated) {
+            return redirect()->back()
+                            ->withErrors($validated)
+                            ->withInput();
+        }
+        try {
+            Category::where('idkategori', $request->idkategori)->update($validated);
+        } catch (\Exception $e) {
+              throw new \Exception(('Gagal menyimpan data book: ' . $e->getMessage()));
+        }
+        return redirect()->route('admin.category')
+                        ->with('success', 'category berhasil ubah.');
+    }
+
+    protected function rules($id = null)
     {
         $uniqueRule = $id ?
             'unique:kategori,nama_kategori,' . $id . ',idkategori' :
             'unique:kategori,nama_kategori';
 
         if($id != null) {
-            return $request->validate([
+            return [
             'nama_kategori' => [
                 'required',
                 'string',
@@ -48,16 +78,9 @@ class CategoryController extends Controller
                 'numeric'
             ]
 
-        ], [
-            'nama_kategori.required' => 'Nama category wajib diisi',
-            'nama_kategori.string' => 'Nama category harus berupa teks',
-            'nama_kategori.max' => 'Nama category max 255 karakter',
-            'nama_kategori.min' => 'Nama category minimal 3 karakter',
-            'nama_kategori.unique' => 'Nama category sudah ada',
-        ]);
+        ];
         }
-
-        return $request->validate([
+        return [
             'nama_kategori' => [
                 'required',
                 'string',
@@ -66,66 +89,25 @@ class CategoryController extends Controller
                 $uniqueRule
             ],
 
-        ], [
-            'nama_kategori.required' => 'Nama category wajib diisi',
-            'nama_kategori.string' => 'Nama category harus berupa teks',
-            'nama_kategori.max' => 'Nama category max 255 karakter',
-            'nama_kategori.min' => 'Nama category minimal 3 karakter',
-            'nama_kategori.unique' => 'Nama category sudah ada',
-        ]);
+        ];
     }
 
-    protected function createCategory(array $data)
-    {
-        try {
-            
-            $kategori = DB::table('kategori')->insert([
-                'nama_kategori' => $this->formatNamaKategori($data['nama_kategori'])
-            ]);
-            return $kategori;
-        } catch (\Exception $e) {
-            throw new \Exception(('Gagal menyimpan data category: ' . $e->getMessage()));
-        }
-    }
-    protected function edit($id)
-    {
-        return view('admin.category.edit', compact('id'));
-    }
 
-    protected function update(Request $request)
-    {
-        $validatedData = $this->validateCategory($request, $request['idjenis_hewan']);
-        $kategori = $this->updateJenisHewan($validatedData);
-        return redirect()->route('admin.category.index')
-                        ->with('success', 'category berhasil ubah.');
-    }
-    protected function updateJenisHewan(array $data)
-    {
-        try {
-            $kategori = DB::table('kategori')->where('idjenis_hewan', $data['idjenis_hewan'])->update([
-                'nama_kategori' => $this->formatNamaKategori($data['nama_kategori'])
-            ]);
-            return $kategori;
-        } catch (\Exception $e) {
-            throw new \Exception(('Gagal menyimpan data category: ' . $e->getMessage()));
-        }
-    }
     protected function destroy($id)
     {
-        if (!JenisHewan::where('idjenis_hewan', $id)->exists()) {
+        if (!Category::where('idkategori', $id)->exists()) {
             return redirect()->back()->with('error', 'Data tidak ditemukan.');
         }
         try {
-            RasHewan::where('idjenis_hewan', $id)->delete();
-            JenisHewan::where('idjenis_hewan', $id)->delete();
+            Category::where('idkategoti', $id)->delete();
             return redirect()->back()->with('deleteSuccess', 'Data berhasil dihapus.');
         } catch (\Exception $e) {
             throw new \Exception(('Gagal menghapus data category: ' . $e->getMessage()));
         }
     }
 
-    protected function formatNamaKategori($nama)
-    {
-        return trim(ucwords(strtolower($nama)));
-    }
+    // protected function formatNamaKategori($nama)
+    // {
+    //     return trim(ucwords(strtolower($nama)));
+    // }
 }

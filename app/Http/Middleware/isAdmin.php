@@ -16,16 +16,22 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!session('user_id')) {
-            return redirect()->route('login');
+        if (!Auth::check()) {
+        return redirect('/login');
+        }
+        $user = Auth::user();
+
+        if(!$user->hasRole('admin')) {
+            abort(403);
         }
 
-        $userRole = session('user_role');
+        return $next($request);
+        // $userRole = session('user_role');
 
-        if ($userRole === 1) {
-            return $next($request);
-        } else {
-            return back()->with('Error', 'Akses ditolak');
-        }
+        // if ($userRole === 1) {
+        //     return $next($request);
+        // } else {
+        //     return back()->with('Error', 'Akses ditolak');
+        // }
     }
 }

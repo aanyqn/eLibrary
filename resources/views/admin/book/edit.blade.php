@@ -1,9 +1,9 @@
 @extends('admin-layout.main')
-@section('title', 'Add Book')
+@section('title', 'Edit Book')
 @php
     $breadcrumbs = [
         'Book' => route('admin.book'),
-        'Add' => null
+        'Edit' => null
     ];
 @endphp
 @push('styles')
@@ -15,31 +15,32 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-    <h4 class="card-title">Add Book</h4>
-    <p class="card-description">Add new book list</p>
-    <form action="{{ route('admin.book.store') }}" method="POST" class="forms-sample">
+    <h4 class="card-title">Edit Book</h4>
+    <p class="card-description">Edit book list</p>
+    <form action="{{ route('admin.book.update') }}" method="POST" class="forms-sample">
         @csrf
+        <input type="hidden" name="idbuku" value="{{ $id }}">
         <div class="form-group">
         <label for="judul">Title</label>
-        <input type="text" name="judul" class="form-control form-control-sm mb-3" id="judulBuku" placeholder="ex. Buku Jadul">
+        <input type="text" name="judul" class="form-control form-control-sm mb-3" id="judulBuku" value="{{ $old[0]->judul }}" placeholder="ex. Buku Jadul">
         @error('judulBuku')
             <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
         @enderror
         <label for="kode">Code</label>
-        <input type="text" name="kode" class="form-control form-control-sm mb-3" id="kodeBuku" placeholder="ex. PM01">
+        <input type="text" name="kode" class="form-control form-control-sm mb-3" id="kodeBuku" value="{{ $old[0]->kode }}" placeholder="ex. PM01">
         @error('kodeBuku')
             <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
         @enderror
         <label for="pengarang">Author</label>
-        <input type="text" name="pengarang" class="form-control form-control-sm mb-3" id="pengarangBuku" placeholder="ex. Dwi Susanto">
+        <input type="text" name="pengarang" class="form-control form-control-sm mb-3" id="pengarangBuku" value="{{ $old[0]->pengarang }}" placeholder="ex. Dwi Susanto">
         @error('pengarangBuku')
             <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
         @enderror
         <label for="idkategori">Category</label>
         <select name="idkategori" class="form-control form-control-sm mb-3" id="kategoriBuku">
-            <option selected>Choose category..</option>
+            <option>Choose category..</option>
             @forelse($data_category as $item)
-            <option value="{{ $item->idkategori }}">{{ $item->nama_kategori }}</option>
+            <option {{ $item->idkategori == $old[0]->idkategori ? 'selected' : '' }} value="{{ $item->idkategori }}">{{ $item->nama_kategori }}</option>
             @empty
             @endforelse
         </select>

@@ -3,7 +3,7 @@
     <head>
         @include('general-layout.head')
         @include('general-layout.global_style')
-        @yield('styles')
+        @stack('styles')
     </head>
     <body>
         <div class="container-scroller">
@@ -14,7 +14,7 @@
             </div>
         </div>
         @include('general-layout.global_js')
-        @yield('scripts')
+        @stack('scripts')
     </body>
 </html>
 
