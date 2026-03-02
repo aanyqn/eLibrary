@@ -18,6 +18,7 @@ Route::post('/otp/verify', [App\Http\Controllers\OTPController::class, 'verify']
 Route::get('/otp/resend', [App\Http\Controllers\OTPController::class, 'resendOtp'])->name('otp.resend');
 
 Route::post('/pdf/book-pdf', [PDFController::class, 'generate'])->name('book.pdf');
+Route::post('/pdf/label-barang', [PDFController::class, 'generateLabel'])->name('label-barang.pdf');
 
 Route::middleware('isAdmin')->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardAdminController::class, 'index'])->name('admin.dashboard');
@@ -34,6 +35,13 @@ Route::middleware('isAdmin')->group(function () {
     Route::get('/admin/book/edit/{id}', [App\Http\Controllers\Admin\BookController::class, 'edit'])->name('admin.book.edit');
     Route::post('/admin/book/update', [App\Http\Controllers\Admin\BookController::class, 'update'])->name('admin.book.update');
     Route::delete('/admin/book/delete/{id}', [App\Http\Controllers\Admin\BookController::class, 'delete'])->name('admin.book.delete');
+
+    Route::get('/admin/barang', [App\Http\Controllers\Admin\BarangController::class, 'index'])->name('admin.barang');
+    Route::get('/admin/barang/create', [App\Http\Controllers\Admin\BarangController::class, 'create'])->name('admin.barang.create');
+    Route::post('/admin/barang/store', [App\Http\Controllers\Admin\BarangController::class, 'store'])->name('admin.barang.store');
+    Route::get('/admin/barang/edit/{id}', [App\Http\Controllers\Admin\BarangController::class, 'edit'])->name('admin.barang.edit');
+    Route::post('/admin/barang/update', [App\Http\Controllers\Admin\BarangController::class, 'update'])->name('admin.barang.update');
+    Route::delete('/admin/barang/delete/{id}', [App\Http\Controllers\Admin\BarangController::class, 'delete'])->name('admin.barang.delete');
 });
 
 Route::get('/user/dashboard', [App\Http\Controllers\User\DashboarUserController::class, 'index'])->name('user.dashboard');

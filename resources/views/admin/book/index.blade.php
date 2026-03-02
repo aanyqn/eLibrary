@@ -1,5 +1,12 @@
 @extends('admin-layout.main')
-@section('title', 'Book')
+@section('title')
+<h2 class="page-title">
+  <span class="page-title-icon bg-gradient-primary text-white me-2">
+  <i class="mdi mdi-book-open-page-variant"></i>
+</span>
+  Book
+</h2>
+@endsection
 @php
     $breadcrumbs = [
         'Book' => null,
@@ -14,59 +21,60 @@
 @section('content')
   <div class="card">
     <div class="card-body">
-        <div class="row align-items-center mb-3">
-          <div class="col-md-6">
+        <div class="row align-items-center mb-3 justify-content-between">
+          <div class="col-auto">
               <a href="{{ route('admin.book.create') }}" class="btn btn-primary">
                   Add
               </a>
           </div>
-          <div class="col-md-6">
-              <p>Generate PDF:</p>
+          <div class="col-auto">
               <form method="POST" action="{{ route('book.pdf') }}" class="d-flex gap-2">
                   @csrf
 
-                  <select name="rotation" class="form-select">
+                  <select name="rotation" class="btn btn-outline-success">
                       <option value="landscape">Landscape</option>
                       <option value="portrait">Portrait</option>
                   </select>
 
                   <button type="submit" class="btn btn-success">
-                      Generate
+                      Generate PDF
                   </button>
               </form>
           </div>
       </div>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th class="text-center">Code</th>
-            <th class="text-center">Title</th>
-            <th class="text-center">Author</th>
-            <th class="text-center">Category</th>
-            <th class="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @forelse($data as $item)
-          <tr>
-              <td class="">{{ $item->kode }}</td>
-              <td class="">{{ $item->judul }}</td>
-              <td class="">{{ $item->pengarang }}</td>
-              <td class="">{{ $item->category->nama_kategori }}</td>
-              <td class="text-center">
-                <a href="{{ route('admin.book.edit', $item->idbuku) }}">
-                  <button class="badge badge-info">Edit</button>
-                </a>
-                <label class="badge badge-danger">Delete</label>
-              </td>
-          </tr>
-          @empty
-          <tr>
-              <td colspan="4" class="align-item-center text-center">No books is found.</td>
-          </tr>
-          @endforelse
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center">Code</th>
+              <th class="text-center">Title</th>
+              <th class="text-center">Author</th>
+              <th class="text-center">Category</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse($data as $item)
+            <tr>
+                <td class="">{{ $item->kode }}</td>
+                <td class="">{{ $item->judul }}</td>
+                <td class="">{{ $item->pengarang }}</td>
+                <td class="">{{ $item->category->nama_kategori }}</td>
+                <td class="text-center">
+                  <a href="{{ route('admin.book.edit', $item->idbuku) }}" class="text-decoration-none">
+                    <button class="badge badge-info">Edit</button>
+                  </a>
+                  <label class="badge badge-danger">Delete</label>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="4" class="align-item-center text-center">No books is found.</td>
+            </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 @endsection

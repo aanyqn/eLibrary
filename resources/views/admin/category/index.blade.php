@@ -1,5 +1,12 @@
 @extends('admin-layout.main')
-@section('title', 'Category')
+@section('title')
+<h2 class="page-title">
+  <span class="page-title-icon bg-gradient-primary text-white me-2">
+  <i class="mdi mdi-shape-plus-outline"></i>
+</span>
+  Category
+</h2>
+@endsection
 @php
     $breadcrumbs = [
         'Category' => null,
@@ -18,35 +25,36 @@
         <a href="{{ route('admin.category.create') }}">
           <button type="button" class="btn btn-primary mb-2">Add</button>
         </a>
-        
       </div>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th class="text-center">ID</th>
-            <th class="text-center">Category Name</th>
-            <th class="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @forelse($data as $item)
-          <tr class="">
-              <td>{{ $item->idkategori }}</td>
-              <td>{{ $item->nama_kategori }}</td>
-              <td class="text-center">
-                <a href="{{ route('admin.category.edit', $item->idkategori) }}">
-                  <button class="badge badge-info">Edit</button>
-                </a>
-                <label class="badge badge-danger">Delete</label>
-              </td>
-          </tr>
-          @empty
-          <tr>
-              <td colspan="2" class="align-item-center text-center">No categories is found.</td>
-          </tr>
-          @endforelse
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">Category Name</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse($data as $item)
+            <tr class="">
+                <td>{{ $item->idkategori }}</td>
+                <td>{{ $item->nama_kategori }}</td>
+                <td class="text-center">
+                  <a href="{{ route('admin.category.edit', $item->idkategori) }}" class="text-decoration-none">
+                    <button class="badge badge-info">Edit</button>
+                  </a>
+                  <label class="badge badge-danger">Delete</label>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="2" class="align-item-center text-center">No categories is found.</td>
+            </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 @endsection

@@ -13,7 +13,7 @@
                 <div class="main-panel">
                     <div class="content-wrapper">
                     <div class="page-header m-2">
-                        <h2>@yield('title')</h2>
+                        @yield('title')
                         @if (isset($breadcrumbs))
                             @include('admin-layout.breadcrumb', ['breadcrumbs' => $breadcrumbs])
                         @endif

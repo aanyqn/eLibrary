@@ -1,9 +1,10 @@
 <!-- partial:partials/_sidebar.html -->
 @php
 $menus = [
-    ['route' => 'admin.dashboard', 'label' => 'Dashboard', 'icon' => 'mdi-home', 'group' => 'main'],
-    ['route' => 'admin.category', 'label' => 'Category', 'icon' => 'mdi-shape-plus-outline', 'group' => 'category'],
-    ['route' => 'admin.book', 'label' => 'Book', 'icon' => 'mdi-book-open-page-variant', 'group' => 'book'],
+    ['route' => 'admin.dashboard', 'label' => 'Dashboard', 'icon' => 'mdi-home','group' => 'main'],
+    ['route' => 'admin.category', 'label' => 'Category', 'icon' => 'mdi-shape-plus-outline','group' => 'category'],
+    ['route' => 'admin.book', 'label' => 'Book', 'icon' => 'mdi-book-open-page-variant','group' => 'book'],
+    ['route' => 'admin.barang', 'label' => 'Barang', 'icon' => 'mdi-shopping','group' => 'barang'],
 ];
 @endphp
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -25,7 +26,7 @@ $menus = [
             </li>
             @foreach($menus as $menu)
             @php
-            $isActive = request()->routeIs($menu['route'].'*');
+            $isActive = request()->routeIs($menu['route']);
             @endphp
             <li class="nav-item">
               <a class="nav-link {{ $isActive ? 'color-purple' : '' }}" href="{{ route($menu['route']) }}">
