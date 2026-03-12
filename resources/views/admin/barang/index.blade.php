@@ -27,8 +27,8 @@
           <h5 class="modal-title">Generate Label PDF</h5>
         </div>
         <div class="modal-body">
-          <label class="mb-2">
-              <input type="checkbox" id="checkAll">
+          <input type="checkbox" id="checkAll">
+          <label class="mb-2 badge badge-outline-success">
               Select All
           </label>
           <form method="POST" action="{{ route('label-barang.pdf') }}" class="d-flex gap-2">
@@ -85,6 +85,12 @@
           <div class="col-auto">
               <a href="{{ route('admin.barang.create') }}" class="btn btn-primary">
                   Add
+              </a>
+              <a href="{{ route('admin.barang.multiple') }}" class="btn btn-primary">
+                  Add Multiple
+              </a>
+              <a href="{{ route('admin.barang.multiple.datatables') }}" class="btn btn-primary">
+                  Add Multiple (DataTables)
               </a>
           </div>
           <div class="col-auto">

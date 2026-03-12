@@ -33,9 +33,10 @@ class PDFController extends Controller
         $barang = Barang::whereIn('id_barang', $request->id_barang)->get();
         $startRow = $request->row ?? 1;
         $startCol = $request->column ?? 1;
+        // return view('pdf.label-barang', compact('startCol','startRow', 'barang'));
 
-        $pdf = Pdf::loadView('pdf.label-barang', compact('barang','startRow', 'startCol'))
-                ->setPaper([0, 0, 561.26, 447.87], 'landscape');
+        $pdf = Pdf::loadView('pdf.label-barang', compact('barang', 'startRow', 'startCol'))
+        ->setPaper([0, 0, 595.28, 467.72]); 
 
         return $pdf->stream('label-barang.pdf');
     }

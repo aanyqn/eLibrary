@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BarangController extends Controller
 {
@@ -17,7 +18,14 @@ class BarangController extends Controller
     {
         return view('admin.barang.create');
     }
-
+    public function multiple()
+    {
+        return view('admin.barang.createMultiple');
+    }
+    public function multipleDatatables()
+    {
+        return view('admin.barang.createMultipleWithDatatables');
+    }
     public function store(Request $request)
     {
         $validated = $request->validate($this->rules());
@@ -44,14 +52,14 @@ class BarangController extends Controller
 
     protected function update(Request $request)
     {
-        $validated = $request->validate($this->rules($request->id_barang));
-        if(!$validated) {
+        $validated = Validator::make($request->all(), $this->rules($request->id_barang));
+        if($validated->fails()) {
             return redirect()->back()
                             ->withErrors($validated)
                             ->withInput();
         }
         try {
-            Barang::where('id_barang', $request->id_barang)->update($validated);
+            Barang::where('id_barang', $request->id_barang)->update($validated->validated());
         } catch (\Exception $e) {
               throw new \Exception(('Gagal menyimpan data barang: ' . $e->getMessage()));
         }
@@ -70,7 +78,7 @@ class BarangController extends Controller
             'nama' => [
                 'required',
                 'string',
-                'max:255',
+                'max:50',
                 'min:3',
                 $uniqueRule
             ],

@@ -38,7 +38,7 @@ class OTPController extends Controller
                 'numeric'
             ]
         ]);
-        $id = auth()->user()->id;
+        $id = Auth::user()->id;
         $otp = User::where('id', $id)->select('otp')->first();
         $inputOtp = $request->char1.$request->char2.$request->char3.$request->char4.$request->char5.$request->char6;
         if($inputOtp == $otp->otp) {
@@ -52,7 +52,7 @@ class OTPController extends Controller
 
     public function resendOTP() 
     {
-        $user = auth()->user()->email;
+        $user = Auth::user()->email;
         $otp = random_int(100000, 999999);
         $resendOtp = User::where('email', $user->email)->update(['otp' => $otp]);
         Mail::to($user->email)->send(new OtpMail($otp));

@@ -9,5 +9,5 @@ class Barang extends Model
     protected $table = 'barang';
     protected $primaryKey = 'id_barang';
     protected $fillable = ['nama', 'harga'];
-    public $timestamps = false;
+    // public $timestamps = false;
 }

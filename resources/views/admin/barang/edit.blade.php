@@ -17,22 +17,22 @@
     <div class="card-body">
     <h4 class="card-title">Edit Barang</h4>
     <p class="card-description">Edit barang list</p>
-    <form action="{{ route('admin.barang.update') }}" method="POST" class="forms-sample">
+    <form action="{{ route('admin.barang.update') }}" method="POST" class="forms-sample" id="form">
         @csrf
         <input type="hidden" name="id_barang" value="{{ $id }}">
         <div class="form-group">
         <label for="nama">Nama Barang</label>
-        <input type="text" name="nama" class="form-control form-control-sm mb-3" id="namaBarang" value="{{ $old[0]->nama }}" placeholder="ex. Buku Jadul">
+        <input type="text" required name="nama" class="form-control form-control-sm mb-3" maxlength="50" minlength="3" id="namaBarang" value="{{ $old[0]->nama }}" placeholder="ex. Buku Jadul">
         @error('namaBarang')
             <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
         @enderror
         <label for="harga">Harga</label>
-        <input type="number" name="harga" class="form-control form-control-sm mb-3" id="hargaBarang" value="{{ $old[0]->harga }}" step="0.01" min="0" placeholder="ex. PM01">
+        <input type="number" required name="harga" class="form-control form-control-sm mb-3" id="hargaBarang" value="{{ $old[0]->harga }}" step="0.01" min="0" placeholder="ex. PM01">
         @error('hargaBarang')
             <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
         @enderror
         </div>
-        <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+        <button type="button" class="btn btn-gradient-primary me-2" id="submitBtn">Submit</button>
         <button class="btn btn-light">Cancel</button>
     </form>
     </div>
@@ -52,5 +52,6 @@
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="/assets/js/dashboard.js"></script>
+    <script src="{{ asset('assets/js/submit-loader.js') }}"></script>
     <!-- End custom js for this page -->
 @endpush
