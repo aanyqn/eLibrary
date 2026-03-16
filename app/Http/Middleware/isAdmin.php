@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,12 +20,11 @@ class isAdmin
         if (!Auth::check()) {
         return redirect('/login');
         }
-        $user = Auth::user();
-
-        if(!$user->hasRole('admin')) {
+        $auth = Auth::user();
+        $user = new User();
+        if(!$user->hasRole($auth->id, $auth->roles->first()->id)) {
             abort(403);
         }
-
         return $next($request);
         // $userRole = session('user_role');
 

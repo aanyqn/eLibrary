@@ -50,15 +50,14 @@ class User extends Authenticatable
 
     public function Roles()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class)
+        ->withPivot('status');
     }
 
-    public function hasRole($role)
+    public function hasRole($id, $role)
     {
-    return $this->roles()
-        ->where('name', $role)
-        ->wherePivot('status', 1)
-        ->exists();
+        $user = $this->find($id);
+        return $user->roles->where('id', $role);
     }
 
     // public function find($id)

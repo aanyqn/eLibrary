@@ -45,9 +45,34 @@ Route::middleware('isAdmin')->group(function () {
     Route::get('/admin/barang/multiple', [App\Http\Controllers\Admin\BarangController::class, 'multiple'])->name('admin.barang.multiple');
     Route::get('/admin/barang/multiple-datatables', [App\Http\Controllers\Admin\BarangController::class, 'multipleDatatables'])->name('admin.barang.multiple.datatables');
 
+    Route::get('/admin/penjualan', [App\Http\Controllers\Admin\PenjualanController::class, 'index'])->name('admin.penjualan');
+    Route::get('/admin/penjualan/create', [App\Http\Controllers\Admin\PenjualanController::class, 'create'])->name('admin.penjualan.create');
+    Route::get('/admin/penjualan/barang/{kode}', [App\Http\Controllers\Admin\PenjualanController::class, 'barang'])->name('admin.penjualan.barang');
+    Route::post('/admin/penjualan/store', [App\Http\Controllers\Admin\PenjualanController::class, 'store'])->name('admin.penjualan.store');
+
+    Route::get('/admin/penjualan/create/axios', [App\Http\Controllers\Admin\PenjualanController::class, 'createAxios'])->name('admin.penjualan.create.axios');
+
+    Route::get('/admin/ajax', [App\Http\Controllers\Admin\AjaxController::class, 'index'])->name('admin.ajax');
+    Route::post('/admin/ajax/submit', [App\Http\Controllers\Admin\AjaxController::class, 'submit'])->name('admin.ajax.submit');
+
+    Route::get('/admin/cascade/ajax', [App\Http\Controllers\Admin\AjaxController::class, 'cascadeSelectAjax'])->name('admin.cascade.ajax');
+    Route::get('/admin/cascade/ajax/kota/{province_id}', [App\Http\Controllers\Admin\AjaxController::class, 'kota'])->name('admin.cascade.ajax.kota');
+    Route::get('/admin/cascade/ajax/kecamatan/{regency_id}', [App\Http\Controllers\Admin\AjaxController::class, 'kecamatan'])->name('admin.cascade.ajax.kecamatan');
+    Route::get('/admin/cascade/ajax/kelurahan/{district_id}', [App\Http\Controllers\Admin\AjaxController::class, 'kelurahan'])->name('admin.cascade.ajax.kelurahan');
+
+    Route::get('/admin/cascade/axios', [App\Http\Controllers\Admin\AjaxController::class, 'cascadeSelectAxios'])->name('admin.cascade.axios');
+
+    Route::get('/admin/kota', function () {
+        return view('admin.kota.index');
+    })->name('admin.kota');
+
     Route::get('/admin/kota/create', function () {
         return view('admin.kota.create');
     })->name('admin.kota.create');
+
+    Route::get('/admin/learn', function () {
+        return view('admin.learn.index');
+    })->name('admin.learn');
 });
 
 Route::get('/user/dashboard', [App\Http\Controllers\User\DashboarUserController::class, 'index'])->name('user.dashboard');

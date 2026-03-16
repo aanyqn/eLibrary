@@ -10,4 +10,8 @@ class Barang extends Model
     protected $primaryKey = 'id_barang';
     protected $fillable = ['nama', 'harga'];
     // public $timestamps = false;
+
+    public function penjualan() {
+        return $this->belongsToMany(Penjualan::class);
+    }
 }

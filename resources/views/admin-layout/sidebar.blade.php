@@ -5,6 +5,9 @@ $menus = [
     ['route' => 'admin.category', 'label' => 'Category', 'icon' => 'mdi-shape-plus-outline','group' => 'category'],
     ['route' => 'admin.book', 'label' => 'Book', 'icon' => 'mdi-book-open-page-variant','group' => 'book'],
     ['route' => 'admin.barang', 'label' => 'Barang', 'icon' => 'mdi-shopping','group' => 'barang'],
+    ['route' => 'admin.kota', 'label' => 'Kota', 'icon' => 'mdi-city','group' => 'kota'],
+    ['route' => 'admin.penjualan', 'label' => 'Penjualan', 'icon' => 'mdi-printer-pos','group' => 'penjualan'],
+    ['route' => 'admin.learn', 'label' => 'Belajar', 'icon' => 'mdi-lamp','group' => 'learn'],
 ];
 @endphp
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
