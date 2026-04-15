@@ -7,30 +7,31 @@
     ];
 @endphp
 @push('styles')
-<!-- Plugin css for this page -->
-<link rel="stylesheet" href="/assets/vendors/font-awesome/css/font-awesome.min.css" />
-<link rel="stylesheet" href="/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
-<!-- End plugin css for this page -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="/assets/vendors/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
+    <!-- End plugin css for this page -->
 @endpush
 @section('content')
-<div class="card">
-    <div class="card-body">
-    <h4 class="card-title">Add Category</h4>
-    <p class="card-description">Add new books category</p>
-    <form action="{{ route('admin.category.store') }}" method="POST" class="forms-sample">
-        @csrf
-        <div class="form-group">
-        <label for="nama_kategori">Category Name</label>
-        <input type="text" name="nama_kategori" class="form-control" id="namaKategori" placeholder="ex. Dongeng">
-        @error('namaKategori')
-            <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
-        @enderror
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Category</h4>
+            <p class="card-description">Add new books category</p>
+            <form action="{{ route('admin.category.store') }}" method="POST" class="forms-sample">
+                @csrf
+                <div class="form-group">
+                    <label for="nama_kategori">Category Name</label>
+                    <input type="text" name="nama_kategori" class="form-control" id="namaKategori"
+                        placeholder="ex. Dongeng">
+                    @error('namaKategori')
+                        <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
+                    @enderror
+                </div>
+                <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+                <button class="btn btn-light">Cancel</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
-        <button class="btn btn-light">Cancel</button>
-    </form>
     </div>
-</div>
 @endsection
 @push('scripts')
     <!-- Plugin js for this page -->

@@ -54,6 +54,11 @@ class User extends Authenticatable
         ->withPivot('status');
     }
 
+    public function vendor()
+    {
+        return $this->hasOne(Vendor::class, 'id_user', 'id');
+    }
+
     public function hasRole($id, $role)
     {
         $user = $this->find($id);

@@ -1,15 +1,9 @@
 <!-- partial:partials/_sidebar.html -->
 @php
 $menus = [
-    ['route' => 'admin.dashboard', 'label' => 'Dashboard', 'icon' => 'mdi-home','group' => 'main'],
-    ['route' => 'admin.category', 'label' => 'Category', 'icon' => 'mdi-shape-plus-outline','group' => 'category'],
-    ['route' => 'admin.book', 'label' => 'Book', 'icon' => 'mdi-book-open-page-variant','group' => 'book'],
-    ['route' => 'admin.barang', 'label' => 'Barang', 'icon' => 'mdi-shopping','group' => 'barang'],
-    ['route' => 'admin.kota', 'label' => 'Kota', 'icon' => 'mdi-city','group' => 'kota'],
-    ['route' => 'admin.penjualan', 'label' => 'Penjualan', 'icon' => 'mdi-printer-pos','group' => 'penjualan'],
-    ['route' => 'admin.learn', 'label' => 'Belajar', 'icon' => 'mdi-lamp','group' => 'learn'],
-    ['route' => 'admin.user', 'label' => 'User', 'icon' => 'mdi-account','group' => 'user'],
-    ['route' => 'admin.vendor', 'label' => 'Vendor', 'icon' => 'mdi-shop','group' => 'vendor'],
+    ['route' => 'vendor.dashboard', 'label' => 'Dashboard', 'icon' => 'mdi-home','group' => 'main'],
+    ['route' => 'vendor.menu', 'label' => 'Menu', 'icon' => 'mdi-book','group' => 'menu'],
+    ['route' => 'vendor.pesanan', 'label' => 'Pesanan', 'icon' => 'mdi-receipt','group' => 'pesanan'],
 ];
 @endphp
         <nav class="sidebar sidebar-offcanvas" id="sidebar">

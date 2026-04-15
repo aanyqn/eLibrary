@@ -73,10 +73,51 @@ Route::middleware('isAdmin')->group(function () {
     Route::get('/admin/learn', function () {
         return view('admin.learn.index');
     })->name('admin.learn');
+
+    Route::get('/admin/user', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.user');
+    Route::get('/admin/user/create', [App\Http\Controllers\Admin\UserController::class, 'create'])->name('admin.user.create');
+    Route::post('/admin/user/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('admin.user.store');
+    Route::get('/admin/user/edit/{id}', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.user.edit');
+    Route::post('/admin/user/update', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.user.update');
+    Route::delete('/admin/user/delete/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.user.delete');
+
+    Route::get('/admin/vendor', [App\Http\Controllers\Admin\VendorController::class, 'index'])->name('admin.vendor');
+    Route::get('/admin/vendor/create', [App\Http\Controllers\Admin\VendorController::class, 'create'])->name('admin.vendor.create');
+    Route::post('/admin/vendor/store', [App\Http\Controllers\Admin\VendorController::class, 'store'])->name('admin.vendor.store');
+    Route::get('/admin/vendor/edit/{id}', [App\Http\Controllers\Admin\VendorController::class, 'edit'])->name('admin.vendor.edit');
+    Route::post('/admin/vendor/update', [App\Http\Controllers\Admin\VendorController::class, 'update'])->name('admin.vendor.update');
+    Route::delete('/admin/vendor/delete/{id}', [App\Http\Controllers\Admin\VendorController::class, 'destroy'])->name('admin.vendor.delete');
+
+    Route::get('/admin/customer', [App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('admin.customer');
+    Route::get('/admin/customer/create_blob', [App\Http\Controllers\Admin\CustomerController::class, 'createBlob'])->name('admin.customer.create_blob');
+    Route::post('/admin/customer/store_blob', [App\Http\Controllers\Admin\CustomerController::class, 'storeBlob'])->name('admin.customer.store_blob');
+    Route::get('/admin/customer/create_path', [App\Http\Controllers\Admin\CustomerController::class, 'createPath'])->name('admin.customer.create_path');
+    Route::post('/admin/customer/store_path', [App\Http\Controllers\Admin\CustomerController::class, 'storePath'])->name('admin.customer.store_path');
+    Route::get('/admin/customer/foto/{id}', [App\Http\Controllers\Admin\CustomerController::class, 'getFoto'])->name('admin.customer.foto');
 });
 
 Route::get('/user/dashboard', [App\Http\Controllers\User\DashboarUserController::class, 'index'])->name('user.dashboard');
 
+Route::middleware('isVendor')->group(function () {
+    Route::get('/vendor/dashboard', [App\Http\Controllers\Vendor\DashboardVendorController::class, 'index'])->name('vendor.dashboard');
+
+    Route::get('/vendor/profile', [App\Http\Controllers\Vendor\ProfileController::class, 'index'])->name('vendor.profile');
+
+    Route::get('/vendor/menu', [App\Http\Controllers\Vendor\MenuController::class, 'index'])->name('vendor.menu');
+    Route::get('/vendor/menu/create', [App\Http\Controllers\Vendor\MenuController::class, 'create'])->name('vendor.menu.create');
+    Route::post('/vendor/menu/store', [App\Http\Controllers\Vendor\MenuController::class, 'store'])->name('vendor.menu.store');
+    Route::get('/vendor/menu/edit/{id}', [App\Http\Controllers\Vendor\MenuController::class, 'edit'])->name('vendor.menu.edit');
+    Route::post('/vendor/menu/update', [App\Http\Controllers\Vendor\MenuController::class, 'update'])->name('vendor.menu.update');
+    Route::delete('/vendor/menu/delete/{id}', [App\Http\Controllers\Vendor\MenuController::class, 'destroy'])->name('vendor.menu.delete');
+
+    Route::get('/vendor/pesanan', [App\Http\Controllers\Vendor\PesananController::class, 'index'])->name('vendor.pesanan');
+    Route::post('/vendor/pesanan/proses', [App\Http\Controllers\Vendor\PesananController::class, 'changePesananStatus'])->name('vendor.pesanan.proses');
+});
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/pesan', [App\Http\Controllers\Sites\PesananController::class, 'index'])->name('pesanan');
+Route::get('/pesan/{id_vendor}', [App\Http\Controllers\Sites\PesananController::class, 'vendorMenu'])->name('pesanan.vendor');
+Route::post('/checkout', [App\Http\Controllers\Sites\PesananController::class, 'checkout'])->name('pesanan.checkout');
+Route::post('/payment', [App\Http\Controllers\Sites\PesananController::class, 'payment'])->name('pesanan.payment');
+Route::get('/payment-success/{id_pesanan}', [App\Http\Controllers\Sites\PesananController::class, 'success'])->name('pesanan.success');

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class isAdmin
+class isVendor
 {
     /**
      * Handle an incoming request.
@@ -21,17 +21,10 @@ class isAdmin
         return redirect('/login');
         }
         $auth = Auth::user();
-        $role_id = $auth->roles[0]->id;
-        if($role_id != 1) {
+        $user = new User();
+        if(!$user->hasRole($auth->id, $auth->roles->first()->id)) {
             abort(403);
         }
         return $next($request);
-        // $userRole = session('user_role');
-
-        // if ($userRole === 1) {
-        //     return $next($request);
-        // } else {
-        //     return back()->with('Error', 'Akses ditolak');
-        // }
     }
 }

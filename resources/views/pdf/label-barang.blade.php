@@ -23,7 +23,7 @@
 
         .sheet {
             position: absolute;
-            top: 4mm;
+            top: 3mm;
             left: 4mm;
             width: 202mm;
             overflow: hidden;
@@ -34,7 +34,7 @@
             border-spacing: 3mm 1.5mm;
             table-layout: fixed;
             width: 208mm;
-            margin-left: -3mm;
+            margin-left: -2.5mm;
             margin-top: -1mm;
         }
 
@@ -46,19 +46,25 @@
             /* overflow: hidden; */
             font-size: 6.5px;
             line-height: 1.3;
-            /* border: 1px solid black; */
+            /* border: 0.5px solid black; */
         }
 
-        td h2 {
-            display: block;
+        .container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .container h3 {
+            display: flex;
+            align-items: center;
             white-space: normal;
             word-break: break-word;
             overflow: hidden;
             font-weight: bold;
-            font-size: 9px;
+            font-size: 8px;
             margin: 0mm 3mm 0mm 3mm;
         }
-        td p {
+        .container p {
             font-size: 8px;
         }
     </style>
@@ -66,21 +72,36 @@
 <body>
     <div class="sheet">
         <table>
-            @php $barangIndex = 0; @endphp
+            @php 
+            require '../vendor/autoload.php';
+            $barangIndex = 0; 
+            $renderer = new Picqer\Barcode\Renderers\PngRenderer();
+            @endphp
             @for ($row = 1; $row <= 8; $row++)
                 <tr>
                     @for ($col = 1; $col <= 5; $col++)
                         <td>
-                            @if(
-                                $row >= $startRow &&
-                                ($row > $startRow || $col >= $startCol) &&
-                                isset($barang[$barangIndex])
-                            )
-                                <h2>{{ $barang[$barangIndex]->nama }}</h2>
-                                <p>Rp {{ number_format($barang[$barangIndex]->harga) }}</p>
-                                {{ $barang[$barangIndex]->id_barang }}
-                                @php $barangIndex++; @endphp
-                            @endif
+                            <div class="container">
+                                @if($row >= $startRow && ($row > $startRow || $col >= $startCol) && isset($barang[$barangIndex]))
+                                    <h3>{{ $barang[$barangIndex]->nama }}</h3>
+                                    <p>Rp {{ number_format($barang[$barangIndex]->harga) }}</p>
+                                    @php 
+                                    $barcode = (new Picqer\Barcode\Types\TypeCode128())->getBarcode($barang[$barangIndex]->id_barang);
+                                    $barcodeImage = base64_encode($renderer->render($barcode, 80, 10));
+                                    @endphp
+                                    <div>
+                                        <div>
+                                            <img src="data:image/png;base64,{{ $barcodeImage }}" height:auto;">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            {{ $barang[$barangIndex]->id_barang }}
+                                        </div>
+                                    </div>
+                                    @php $barangIndex++; @endphp
+                                @endif
+                            </div>
                         </td>
                     @endfor
                 </tr>
