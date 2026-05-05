@@ -121,4 +121,19 @@ class BarangController extends Controller
             throw new \Exception(('Gagal menghapus data barang: ' . $e->getMessage()));
         }
     }
+
+    public function apiBarang($id)
+    {
+        $barang = Barang::find($id);
+        if ($barang) {
+            return response()->json([
+                'success' => true,
+                'data' => $barang
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Barang tidak ditemukan'
+        ], 404);
+    }
 }

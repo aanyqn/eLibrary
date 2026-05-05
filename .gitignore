@@ -19,6 +19,8 @@
 /storage/*.key
 /storage/pail
 /vendor
+koleksi_buku.sql
+koleksi_buku.dump
 Homestead.json
 Homestead.yaml
 Thumbs.db

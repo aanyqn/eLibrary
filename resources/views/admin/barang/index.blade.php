@@ -1,25 +1,48 @@
 @extends('admin-layout.main')
 @section('title')
-<h2 class="page-title">
-  <span class="page-title-icon bg-gradient-primary text-white me-2">
-  <i class="mdi mdi-shopping"></i>
-</span>
-  Barang
-</h2>
+  <h2 class="page-title">
+    <span class="page-title-icon bg-gradient-primary text-white me-2">
+      <i class="mdi mdi-shopping"></i>
+    </span>
+    Barang
+  </h2>
 @endsection
 @php
-    $breadcrumbs = [
-        'Barang' => null,
-    ];
+  $breadcrumbs = [
+    'Barang' => null,
+  ];
 @endphp
 @push('styles')
-<!-- Plugin css for this page -->
-<link rel="stylesheet" href="/assets/vendors/font-awesome/css/font-awesome.min.css" />
-<link rel="stylesheet" href="/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
-<!-- End plugin css for this page -->
+  <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="/assets/vendors/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
+  <!-- End plugin css for this page -->
 @endpush
 @section('content')
-<!-- Vertically centered scrollable modal -->
+  <div class="modal fade" id="scanner">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="modal-title"></p>
+        </div>
+        <div class="modal-body ms-3 me-3">
+          <div class="d-flex justify-content-center mb-3">
+            <div id="reader" style="width:300px;"></div>
+          </div>
+          <p>ID Barang: <span id="id"></span></p>
+          <p>Nama Barang: <span id="nama"></span></p>
+          <p>Harga: <span id="harga"></span></p>
+          <audio id="beep" src="{{ asset('assets/audio/beep.mp3') }}"></audio>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="closeScanner">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Vertically centered scrollable modal -->
   <div class="modal fade" id="labelBarang">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
@@ -29,7 +52,7 @@
         <div class="modal-body">
           <input type="checkbox" id="checkAll">
           <label class="mb-2 badge badge-outline-success">
-              Select All
+            Select All
           </label>
           <form method="POST" action="{{ route('label-barang.pdf') }}" class="d-flex gap-2">
             @csrf
@@ -46,29 +69,32 @@
                   </thead>
                   <tbody>
                     @forelse($data as $item)
-                    <tr>
+                      <tr>
                         <td class="">{{ $item->id_barang }}</td>
                         <td class="text-truncate" style="max-width: 200px">{{ $item->nama }}</td>
                         <td class="">{{ $item->harga }}</td>
-                        <td class=""><input type="checkbox" name="id_barang[]" class="checkLabel" id="id_barang" value="{{ $item->id_barang }}"></td>
-                    </tr>
+                        <td class=""><input type="checkbox" name="id_barang[]" class="checkLabel" id="id_barang"
+                            value="{{ $item->id_barang }}"></td>
+                      </tr>
                     @empty
-                    <tr>
+                      <tr>
                         <td colspan="4" class="align-item-center text-center">No books is found.</td>
-                    </tr>
+                      </tr>
                     @endforelse
                   </tbody>
                 </table>
               </div>
               <label for="row mt-2">Print at row</label>
-              <input type="number" name="row" class="form-control form-control-sm mb-3" id="rowCoordinate" max="8" min="1">
+              <input type="number" name="row" class="form-control form-control-sm mb-3" id="rowCoordinate" max="8"
+                min="1">
               @error('rowCoordinate')
-                  <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
+                <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
               @enderror
               <label for="column mt-2">Print at column</label>
-              <input type="number" name="column" class="form-control form-control-sm mb-3" id="columnPoint" max="5" min="1">
+              <input type="number" name="column" class="form-control form-control-sm mb-3" id="columnPoint" max="5"
+                min="1">
               @error('columnPoint')
-                  <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
+                <p class="text-sm text-red-600 mt-1.5">{{ $message }}</p>
               @enderror
               <button type="submit" class="btn btn-success">
                 Generate
@@ -81,23 +107,26 @@
   </div>
   <div class="card">
     <div class="card-body">
-        <div class="row align-items-center mb-3 justify-content-between">
-          <div class="col-auto">
-              <a href="{{ route('admin.barang.create') }}" class="btn btn-primary">
-                  Add
-              </a>
-              <a href="{{ route('admin.barang.multiple') }}" class="btn btn-primary">
-                  Add Multiple
-              </a>
-              <a href="{{ route('admin.barang.multiple.datatables') }}" class="btn btn-primary">
-                  Add Multiple (DataTables)
-              </a>
-          </div>
-          <div class="col-auto">
-              <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#labelBarang">
-                  Generate Lable
-              </button>
-          </div>
+      <div class="row align-items-center mb-3 justify-content-between">
+        <div class="col-auto">
+          <a href="{{ route('admin.barang.create') }}" class="btn btn-primary">
+            Add
+          </a>
+          <a href="{{ route('admin.barang.multiple') }}" class="btn btn-primary">
+            Add Multiple
+          </a>
+          <a href="{{ route('admin.barang.multiple.datatables') }}" class="btn btn-primary">
+            Add Multiple (DataTables)
+          </a>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#scanner">
+            Scan
+          </button>
+          <button type="submit" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#labelBarang">
+            Generate Lable
+          </button>
+        </div>
       </div>
       <div class="table-responsive">
         <table class="table table-striped">
@@ -112,7 +141,7 @@
           </thead>
           <tbody>
             @forelse($data as $item)
-            <tr>
+              <tr>
                 <td class="">{{ $item->id_barang }}</td>
                 <td class="text-truncate" style="max-width: 220px" title="{{ $item->nama }}">{{ $item->nama }}</td>
                 <td class="">{{ $item->harga }}</td>
@@ -123,11 +152,11 @@
                   </a>
                   <label class="badge badge-danger">Delete</label>
                 </td>
-            </tr>
+              </tr>
             @empty
-            <tr>
+              <tr>
                 <td colspan="4" class="align-item-center text-center">No books is found.</td>
-            </tr>
+              </tr>
             @endforelse
           </tbody>
         </table>
@@ -136,19 +165,96 @@
   </div>
 @endsection
 @push('scripts')
-    <!-- Plugin js for this page -->
-    <script src="/assets/vendors/chart.js/chart.umd.js"></script>
-    <script src="/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="/assets/js/off-canvas.js"></script>
-    <script src="/assets/js/misc.js"></script>
-    <script src="/assets/js/settings.js"></script>
-    <script src="/assets/js/todolist.js"></script>
-    <script src="/assets/js/jquery.cookie.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <script src="/assets/js/dashboard.js"></script>
-    <!-- End custom js for this page -->
-    <script src="/assets/js/select-all.js"></script>
+  <!-- Plugin js for this page -->
+  <script src="/assets/vendors/chart.js/chart.umd.js"></script>
+  <script src="/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="/assets/js/off-canvas.js"></script>
+  <script src="/assets/js/misc.js"></script>
+  <script src="/assets/js/settings.js"></script>
+  <script src="/assets/js/todolist.js"></script>
+  <script src="/assets/js/jquery.cookie.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page -->
+  <script src="/assets/js/dashboard.js"></script>
+  <script>
+    let html5QrcodeScanner;
+
+    const modal = $('#scanner');
+
+    modal.on('shown.bs.modal', function () {
+      startScanner();
+    });
+
+    // Saat modal ditutup → matikan kamera
+    modal.on('hidden.bs.modal', function () {
+      stopScanner();
+    });
+
+    function startScanner() {
+      // Clear previous data
+      $('#id').text('');
+      $('#nama').text('');
+      $('#harga').text('');
+
+      html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", { 
+          fps: 10, 
+          qrbox: { width: 120, height: 120 } 
+        });
+
+      function onScanSuccess(decodedText, decodedResult) {
+        console.log(`Scan result: ${decodedText}`, decodedResult);
+        
+        // Play beep sound
+        const beep = $('#beep')[0];
+        if (beep) {
+            beep.play().catch(e => console.log('Audio play failed:', e));
+        }
+
+        stopScanner();
+
+        // Fetch data based on barcode
+        fetch(`/admin/barang/api/${decodedText}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              $('#id').text(data.data.id_barang);
+              $('#nama').text(data.data.nama);
+              
+              // Format harga to RP
+              let formattedHarga = new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                  minimumFractionDigits: 0
+              }).format(data.data.harga);
+              $('#harga').text(formattedHarga);
+            } else {
+              $('#id').text('Tidak ditemukan');
+              $('#nama').text('-');
+              $('#harga').text('-');
+              alert(data.message);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+            $('#id').text('Error');
+            alert('Terjadi kesalahan saat mengambil data.');
+          });
+      }
+
+      html5QrcodeScanner.render(onScanSuccess);
+    }
+
+    function stopScanner() {
+      if (html5QrcodeScanner) {
+        html5QrcodeScanner.clear().catch(err => console.log(err));
+        html5QrcodeScanner = null;
+      }
+    }
+  </script>
+  <!-- End custom js for this page -->
+  <script src="/assets/js/select-all.js"></script>
 @endpush

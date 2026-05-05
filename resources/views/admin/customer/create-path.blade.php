@@ -292,7 +292,7 @@
             formData.append('kelurahan', $('#kelurahan').val());
 
             if (capturedBlob) {
-                formData.append('foto', capturedBlob, 'foto.png'); // ✅ file asli
+                formData.append('foto', capturedBlob, 'foto.png');
             }
 
             axios.post('/admin/customer/store_path', formData, {

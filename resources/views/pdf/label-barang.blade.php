@@ -87,7 +87,7 @@
                                     <p>Rp {{ number_format($barang[$barangIndex]->harga) }}</p>
                                     @php 
                                     $barcode = (new Picqer\Barcode\Types\TypeCode128())->getBarcode($barang[$barangIndex]->id_barang);
-                                    $barcodeImage = base64_encode($renderer->render($barcode, 80, 10));
+                                    $barcodeImage = base64_encode($renderer->render($barcode, 80, 20));
                                     @endphp
                                     <div>
                                         <div>

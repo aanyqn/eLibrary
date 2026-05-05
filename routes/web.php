@@ -44,6 +44,7 @@ Route::middleware('isAdmin')->group(function () {
     Route::delete('/admin/barang/delete/{id}', [App\Http\Controllers\Admin\BarangController::class, 'delete'])->name('admin.barang.delete');
     Route::get('/admin/barang/multiple', [App\Http\Controllers\Admin\BarangController::class, 'multiple'])->name('admin.barang.multiple');
     Route::get('/admin/barang/multiple-datatables', [App\Http\Controllers\Admin\BarangController::class, 'multipleDatatables'])->name('admin.barang.multiple.datatables');
+    Route::get('/admin/barang/api/{id}', [App\Http\Controllers\Admin\BarangController::class, 'apiBarang'])->name('admin.barang.api');
 
     Route::get('/admin/penjualan', [App\Http\Controllers\Admin\PenjualanController::class, 'index'])->name('admin.penjualan');
     Route::get('/admin/penjualan/create', [App\Http\Controllers\Admin\PenjualanController::class, 'create'])->name('admin.penjualan.create');
@@ -112,6 +113,7 @@ Route::middleware('isVendor')->group(function () {
 
     Route::get('/vendor/pesanan', [App\Http\Controllers\Vendor\PesananController::class, 'index'])->name('vendor.pesanan');
     Route::post('/vendor/pesanan/proses', [App\Http\Controllers\Vendor\PesananController::class, 'changePesananStatus'])->name('vendor.pesanan.proses');
+    Route::get('/vendor/pesanan/api/{order_id}', [App\Http\Controllers\Vendor\PesananController::class, 'apiPesanan'])->name('vendor.pesanan.api');
 });
 
 Auth::routes();

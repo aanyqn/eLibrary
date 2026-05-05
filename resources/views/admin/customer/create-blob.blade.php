@@ -271,16 +271,6 @@
     <script>
         $('.btn-send').on('click', function () {
 
-            // let data = {
-            //     nama: $('#namaCustomer').val(),
-            //     alamat: $('#alamatCustomer').val(),
-            //     provinsi: $('#provinsi').val(),
-            //     kota: $('#kota').val(),
-            //     kecamatan: $('#kecamatan').val(),
-            //     kelurahan: $('#kelurahan').val(),
-            //     foto_blob: capturedImage
-            // };
-
             axios.post('/admin/customer/store_blob', {
                 nama: $('#namaCustomer').val(),
                 alamat: $('#alamatCustomer').val(),
